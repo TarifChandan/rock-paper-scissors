@@ -2,12 +2,15 @@ function getComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3) + 1;
 
   if (randomNumber === 1) {
-    console.log("Rock");
+    return "Rock";
   } else if (randomNumber === 2) {
-    console.log("Paper");
+    return "Paper";
   } else {
-    console.log("Scissors");
+    return "Scissors";
   }
 }
 
-getComputerChoice();
+function getHumanChoice() {
+  let userInput = prompt("Pick your choice: Rock, Paper, or Scissors?");
+  return userInput;
+}
