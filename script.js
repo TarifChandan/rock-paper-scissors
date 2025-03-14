@@ -139,9 +139,13 @@ function playGame() {
     console.log(
       `The winner of the 5 rounds is the human, with a score of ${humanScore}, while the computer scored ${computerScore}.`
     );
-  } else {
+  } else if (humanScore < computerScore) {
     console.log(
       `The winner of the 5 rounds is the computer, with a score of ${computerScore}, while the human scored ${humanScore}.`
+    );
+  } else {
+    console.log(
+      `The match ended in a draw, with both the human and the computer scoring ${humanScore}.`
     );
   }
 }
