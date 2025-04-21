@@ -1,10 +1,31 @@
+const choiceButtons = document.querySelectorAll(".btn");
+const currentRoundDisplay = document.querySelector(".round-current");
+const humanChoiceDisplay = document.querySelector(".human-choice");
+const computerChoiceDisplay = document.querySelector(".computer-choice");
+const roundResultDisplay = document.querySelector(".round-result");
+const humanScoreDisplay = document.querySelector(".human-score");
+const computerScoreDisplay = document.querySelector(".computer-score");
+const gameOverDisplay = document.querySelector(".game-over-el");
+const restartButton = document.querySelector(".restart-game");
+
 let humanScore = 0;
 let computerScore = 0;
+let currentRound = 0;
 
 let humanChoice;
 let computerChoice;
 
-playGame();
+restartButton.addEventListener("click", restartGame);
+
+choiceButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentRound += 1;
+    currentRoundDisplay.textContent = `Round: ${currentRound}`;
+    humanChoice = button.textContent;
+    computerChoice = getComputerChoice();
+    playRound(humanChoice, computerChoice);
+  });
+});
 
 // FUNCTIONS
 function getComputerChoice() {
@@ -30,91 +51,80 @@ function playRound(humanChoice, computerChoice) {
   humanChoice = humanChoice.toLowerCase();
 
   if (humanChoice === computerChoice) {
-    console.log("Human Choice: " + humanChoice);
-    console.log("Computer Choice: " + computerChoice);
-    console.log("It's a tie.");
-    console.log("Human Score: " + humanScore);
-    console.log("Computer Score: " + computerScore);
+    roundResultDisplay.textContent = "It's a tie.";
+    updateGameDisplays(humanChoice, computerChoice, humanScore, computerScore);
   } else if (humanChoice === "rock" && computerChoice === "scissors") {
-    console.log("Human Choice: " + humanChoice);
-    console.log("Computer Choice: " + computerChoice);
-    console.log("The winner is the human.");
+    roundResultDisplay.textContent = "The winner is the human.";
     humanScore += 1;
-    console.log("Human Score: " + humanScore);
-    console.log("Computer Score: " + computerScore);
+    updateGameDisplays(humanChoice, computerChoice, humanScore, computerScore);
   } else if (humanChoice === "paper" && computerChoice === "rock") {
-    console.log("Human Choice: " + humanChoice);
-    console.log("Computer Choice: " + computerChoice);
-    console.log("The winner is the human.");
+    roundResultDisplay.textContent = "The winner is the human.";
     humanScore += 1;
-    console.log("Human Score: " + humanScore);
-    console.log("Computer Score: " + computerScore);
+    updateGameDisplays(humanChoice, computerChoice, humanScore, computerScore);
   } else if (humanChoice === "scissors" && computerChoice === "paper") {
-    console.log("Human Choice: " + humanChoice);
-    console.log("Computer Choice: " + computerChoice);
-    console.log("The winner is the human.");
+    roundResultDisplay.textContent = "The winner is the human.";
     humanScore += 1;
-    console.log("Human Score: " + humanScore);
-    console.log("Computer Score: " + computerScore);
+    updateGameDisplays(humanChoice, computerChoice, humanScore, computerScore);
   } else {
-    console.log("Human Choice: " + humanChoice);
-    console.log("Computer Choice: " + computerChoice);
-    console.log("The winner is the computer.");
+    roundResultDisplay.textContent = "The winner is the computer.";
     computerScore += 1;
-    console.log("Human Score: " + humanScore);
-    console.log("Computer Score: " + computerScore);
+    updateGameDisplays(humanChoice, computerChoice, humanScore, computerScore);
+  }
+
+  if (currentRound === 5) {
+    currentRoundDisplay.textContent = `Round: ${currentRound}`;
+
+    if (humanScore > computerScore) {
+      roundResultDisplay.innerHTML = `The winner of the 5 rounds is <span class="winner-text"> the human, with a score of ${humanScore},</span> while the computer scored ${computerScore}.`;
+    } else if (humanScore < computerScore) {
+      roundResultDisplay.innerHTML = `The winner of the 5 rounds is <span class="winner-text"> the computer, with a score of ${computerScore},</span> while the human scored ${humanScore}.`;
+    } else {
+      roundResultDisplay.innerHTML = `The match ended in a draw, with both the human and the computer <span class="winner-text">scoring ${humanScore}.</span>`;
+    }
+
+    choiceButtons.forEach((button) => {
+      button.classList.add("disabled");
+    });
+
+    gameOverDisplay.setAttribute(
+      "style",
+      "display: block; font-size: 24px; color: #FFD700"
+    );
+
+    gameOverDisplay.textContent = "Game Over!";
+
+    restartButton.style.display = "inline-block";
   }
 }
 
-function playGame() {
-  // Round 1
-  console.log(" *ROUND 1!* ");
-  humanChoice = getHumanChoice();
-  computerChoice = getComputerChoice();
+function restartGame() {
+  humanScore = 0;
+  computerScore = 0;
+  currentRound = 0;
 
-  playRound(humanChoice, computerChoice);
+  currentRoundDisplay.textContent = "Round: 0";
 
-  // Round 2
-  console.log(" *ROUND 2!* ");
-  humanChoice = getHumanChoice();
-  computerChoice = getComputerChoice();
+  updateGameDisplays();
 
-  playRound(humanChoice, computerChoice);
+  choiceButtons.forEach((button) => {
+    button.classList.remove("disabled");
+  });
 
-  // Round 3
-  console.log(" *ROUND 3!* ");
-  humanChoice = getHumanChoice();
-  computerChoice = getComputerChoice();
+  gameOverDisplay.style.display = "none";
 
-  playRound(humanChoice, computerChoice);
+  roundResultDisplay.innerHTML = "";
 
-  // Round 4
-  console.log(" *ROUND 4!* ");
-  humanChoice = getHumanChoice();
-  computerChoice = getComputerChoice();
+  restartButton.style.display = "none";
+}
 
-  playRound(humanChoice, computerChoice);
-
-  // Round 5
-  console.log(" *ROUND 5!* ");
-  humanChoice = getHumanChoice();
-  computerChoice = getComputerChoice();
-
-  playRound(humanChoice, computerChoice);
-
-  // Announcement of the Ultimate Winner!
-  console.log(" *ULTIMATE WINNER!* ");
-  if (humanScore > computerScore) {
-    console.log(
-      `The winner of the 5 rounds is the human, with a score of ${humanScore}, while the computer scored ${computerScore}.`
-    );
-  } else if (humanScore < computerScore) {
-    console.log(
-      `The winner of the 5 rounds is the computer, with a score of ${computerScore}, while the human scored ${humanScore}.`
-    );
-  } else {
-    console.log(
-      `The match ended in a draw, with both the human and the computer scoring ${humanScore}.`
-    );
-  }
+function updateGameDisplays(
+  humanChoice = "❓",
+  computerChoice = "❓",
+  humanScore = 0,
+  computerScore = 0
+) {
+  humanChoiceDisplay.textContent = "Human Choice: " + humanChoice;
+  computerChoiceDisplay.textContent = "Computer Choice: " + computerChoice;
+  humanScoreDisplay.textContent = "Human Score: " + humanScore;
+  computerScoreDisplay.textContent = "Computer Score: " + computerScore;
 }

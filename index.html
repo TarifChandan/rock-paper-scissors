@@ -4,8 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors</title>
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="container">
+      <h1>Man vs Machine: Play Rock, Paper, Scissors!</h1>
+      <button class="rock btn">Rock</button>
+      <button class="paper btn">Paper</button>
+      <button class="scissors btn">Scissors</button>
+      <div class="result">
+        <p class="round-current">Round: 0</p>
+        <p class="human-choice">Human Choice: ❓</p>
+        <p class="computer-choice">Computer Choice: ❓</p>
+        <p class="game-over-el"></p>
+        <p class="round-result"></p>
+        <p class="human-score">Human Score: 0</p>
+        <p class="computer-score">Computer Score: 0</p>
+      </div>
+
+      <button class="restart-game">Restart Game</button>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
